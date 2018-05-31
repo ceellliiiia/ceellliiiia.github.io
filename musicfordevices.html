@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css"><!--
+a:link {text-decoration: none}
+a:link {color:#000}
+a:visited {text-decoration: none}
+a:visited {color:#603}
+a:active {text-decoration: none}
+a:hover {text-decoration: none}
+a:hover { color:#CF0}
+-->
+
+.mp3Player {
+    padding: 0px 12px;
+    margin: 0px 12px;
+    background-color:#fff;
+}
+
+button {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font:  40px arial, sans-serif;
+    color: #4169e1;
+}
+
+button:focus {
+	outline:0;
+}
+
+p {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+
+p.ex1 {
+    line-height: 100%;
+	font: 12px arial, sans-serif;
+
+}
+
+p.ex2 {
+    font:  italic bold 12px/30px Georgia, serif;
+}
+p.title {
+    font:  20px arial, sans-serif;color: rgb(0,0,255) 
+}
+p.heading {
+	line-height: 100%;
+	font:  12px arial, sans-serif;
+	color: rgb(0,0,255);
+	margin-top: 0em;
+  margin-bottom: .5em;
+  
+  img {image-orientation: from-image;}
+
+}
+div.content { width: 925px }
+	</style>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+	<script type='text/javascript'>//<![CDATA[ 
+
+jQuery(function (){
+    var myAudio = document.getElementById("myAudio");
+    var current = null;
+    var playingString = "<span aria-hidden=\"true\" data-icon=\"&#xe002;\"></span><span class=\"screen-reader-text\">Pause</span>";
+    var pausedString = "<span aria-hidden=\"true\" data-icon=\"&#xe003;\"></span><span class=\"screen-reader-text\">Play</span>";
+    $(document.body).on('click', '.btnPlayPause',function(e){
+        var target = this;
+        $(".btnPlayPause").css("color", "black");
+        //console.log(target, current); //return;
+        if (current == target) {
+//            target.innerHTML = pausedString;
+						$(this).css("color", "black");
+            target.parentNode.setAttribute('data-pos', myAudio.currentTime); //start from paused
+            myAudio.pause();
+            current = null;
+        } else { // current!=target
+            if (current != null) {
+//                current.innerHTML = pausedString;
+								$(this).css("color", "black");
+                current.parentNode.setAttribute('data-pos', '0'); //reset position
+                target.parentNode.setAttribute('data-pos', myAudio.currentTime); //start from paused
+            }
+            current = target;
+//            target.innerHTML = playingString;
+						$(this).css("color", "lime");
+            if(myAudio.canPlayType && myAudio.canPlayType("audio/mpeg") != "") { // MP3
+                myAudio.src = target.parentNode.getAttribute('data-src');
+            } else if(myAudio.canPlayType && myAudio.canPlayType("audio/ogg") != "") {  // OGG
+                myAudio.src = target.parentNode.getAttribute('data-src2');
+            } else {
+                return; // no audio support
+            }
+            myAudio.play();
+            myAudio.onloadeddata = function () {
+                myAudio.currentTime = parseFloat(target.parentNode.getAttribute('data-pos'));
+            };
+        }
+    });
+    $(document.body).on('click', '.btnMute',function(e){
+        myAudio.muted = !myAudio.muted;
+        $('.btnMute').each(function(){
+            if (myAudio.muted) {
+                this.innerHTML = "<span aria-hidden=\"true\" data-icon=\"&#xe001;\"></span><span class=\"screen-reader-text\">Muted</span>";
+            } else {
+                this.innerHTML = "<span aria-hidden=\"true\" data-icon=\"&#xe000;\"></span><span class=\"screen-reader-text\">Audible</span>";
+            }
+        });
+    });
+});
+
+//]]>  
+</script>
+</head>
+<body>
+<p>
+<audio id="myAudio">&nbsp;</audio>
+</p>
+<p class="ex1">
+<br>
+Please choose a track below and let it play through.
+<br> (It takes a second to load, be patient.)
+<br> After some time, leisurely place your phone on the table on stage. 
+<br> Thank you. 
+<br>
+                                                                                           
+<div class="mp3Player" data-pos="0" data-src="one17.11.8.mp3" data-src2="one17.11.8.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="two17.11.8.mp3" data-src2="two17.11.8.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="three17.11.8.mp3" data-src2="three17.11.8.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="four17.11.9.mp3" data-src2="four17.11.9.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="six17.11.9.mp3" data-src2="six17.11.9.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="nine11.8.17.mp3" data-src2="nine11.8.17.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="a11.10.17.mp3" data-src2="a11.10.17.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="B11.10.17.mp3" data-src2="B11.10.17.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<div class="mp3Player" data-pos="0" data-src="C11.10.17.mp3" data-src2="C11.10.17.ogg"><button class="btnPlayPause button">&#10161;</button></div>
+<!--<audio id="myAudio" src="/4.26B.mp3" preload="auto">
+</audio>
+<a onClick="togglePlay()">&#10157;</a-->
+</p>
+</body>
+</html>
